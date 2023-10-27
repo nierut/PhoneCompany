@@ -6,7 +6,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class BillCalculatorImpl implements TelephoneBillCalculator{
@@ -22,8 +24,39 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         if(freeNumber.equals(phoneNumber)){
             return BigDecimal.valueOf(0.00);
         }
-        BigDecimal bill = BigDecimal.valueOf(0.00);
-        return null;
+        Double callLength = (double) callStart.until(callEnd, ChronoUnit.MINUTES);
+        BigDecimal bill = calculateFirstFiveMinutes(callStart,callEnd);
+        if(callLength <= 5.0) {
+            return bill;
+        }
+        Double restOfCall = callLength - 5.0;
+        int restOfMinutes = (int) Math.ceil(restOfCall);
+        BigDecimal priceOfRemainderOfCall = BigDecimal.valueOf(restOfMinutes * 0.2);
+        return bill.add(priceOfRemainderOfCall);
+    }
+
+    private BigDecimal calculateFirstFiveMinutes(LocalDateTime start, LocalDateTime end) {
+        BigDecimal sum = BigDecimal.valueOf(0.0);
+        LocalDateTime currentTime = start;
+        int counter = 0;
+        while(counter < 5 && currentTime.isBefore(end)) {
+        LocalTime time = currentTime.toLocalTime();
+        if(timeFallsIntoInterval(time)) {
+            sum.add(BigDecimal.valueOf(1.0));
+        } else {
+            sum.add(BigDecimal.valueOf(0.5));
+        }
+        }
+        return sum;
+    }
+
+    private boolean timeFallsIntoInterval(LocalTime time) {
+        LocalTime start = LocalTime.of(8, 0, 0);
+        LocalTime end = LocalTime.of(16, 0, 1);
+        if(time.isAfter(start) && time.isBefore(end)) {
+            return true;
+        }
+        return false;
     }
 
     public String getFreeNumber(String fileName) {
@@ -43,7 +76,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
             String freeNumber = getMostOftenCalledNumber(calledNumbers);
             return freeNumber;
         }catch (IOException exception){
-            return null;
+            return "";
         }
     }
 
