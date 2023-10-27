@@ -46,6 +46,8 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         } else {
             sum.add(BigDecimal.valueOf(0.5));
         }
+        counter++;
+        currentTime = currentTime.plusMinutes(1);
         }
         return sum;
     }
