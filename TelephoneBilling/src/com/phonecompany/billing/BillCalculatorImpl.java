@@ -35,7 +35,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         return bill.add(priceOfRemainderOfCall);
     }
 
-    private BigDecimal calculateFirstFiveMinutes(LocalDateTime start, LocalDateTime end) {
+    public BigDecimal calculateFirstFiveMinutes(LocalDateTime start, LocalDateTime end) {
         BigDecimal sum = BigDecimal.valueOf(0.0);
         LocalDateTime currentTime = start;
         int counter = 0;
@@ -52,7 +52,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         return sum;
     }
 
-    private boolean timeFallsIntoInterval(LocalTime time) {
+    public boolean timeFallsIntoInterval(LocalTime time) {
         LocalTime start = LocalTime.of(8, 0, 0);
         LocalTime end = LocalTime.of(16, 0, 1);
         if(time.isAfter(start) && time.isBefore(end)) {
@@ -82,7 +82,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         }
     }
 
-    private String getMostOftenCalledNumber(HashMap<String, Integer> calledNumbers) {
+    public String getMostOftenCalledNumber(HashMap<String, Integer> calledNumbers) {
         Integer highestNumberOfCalls = 0;
         for (Map.Entry<String, Integer> set :
                 calledNumbers.entrySet()) {
@@ -107,7 +107,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
             Collections.sort(arithmeticNumbers);
             return String.valueOf(arithmeticNumbers.get(arithmeticNumbers.size() - 1));
     }
-    private LocalDateTime getDate(String dateStr) {
+    public LocalDateTime getDate(String dateStr) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime dateTime = LocalDateTime.parse(dateStr, formatter);
         return dateTime;
