@@ -31,7 +31,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         }
         Double restOfCall = callLength - 5.0;
         int restOfMinutes = (int) Math.ceil(restOfCall);
-        BigDecimal priceOfRemainderOfCall = BigDecimal.valueOf(restOfMinutes * 0.2);
+        BigDecimal priceOfRemainderOfCall = BigDecimal.valueOf(restOfMinutes * 0.20);
         return bill.add(priceOfRemainderOfCall);
     }
 
@@ -44,7 +44,7 @@ public class BillCalculatorImpl implements TelephoneBillCalculator{
         if(timeFallsIntoInterval(time)) {
             sum.add(BigDecimal.valueOf(1.0));
         } else {
-            sum.add(BigDecimal.valueOf(0.5));
+            sum.add(BigDecimal.valueOf(0.50));
         }
         counter++;
         currentTime = currentTime.plusMinutes(1);
