@@ -7,15 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BillCalculatorImplTest {
 
-        BillCalculatorImpl calculator = new BillCalculatorImpl();
+    BillCalculatorImpl calculator = new BillCalculatorImpl();
+
     @Test
-    void calculateFirstFiveMinutes() {
-        public void calculatePriceForFirstFiveMinutes() {
-            LocalDateTime start = LocalDateTime.of(2020, 1, 13, 18, 10, 15);
-            LocalDateTime end = LocalDateTime.of(2020,1,13,18,12,57);
-            BigDecimal expected = BigDecimal.valueOf(3 * 0.50);
-            BigDecimal actual = calculator.calculateFirstFiveMinutes(start,end);
-            Assert.equals(actual,expected);
-        }
+    void calculatesFirstFiveMinutesCorrectly() {
+        LocalDateTime start = LocalDateTime.of(2020, 1, 13, 18, 10, 15);
+        LocalDateTime end = LocalDateTime.of(2020,1,13,18,12,57);
+        BigDecimal expected = BigDecimal.valueOf(3 * 0.50);
+        BigDecimal actual = calculator.calculateFirstFiveMinutes(start,end);
+        assertEquals(expected, actual);
     }
 }
